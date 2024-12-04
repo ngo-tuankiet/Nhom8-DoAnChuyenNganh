@@ -29,7 +29,16 @@
                     <li><a href="https://hasaki.vn/clinic">https://hasaki.vn/clinic</a></li>
                     <li>Hasaki cẩm nang</li>
                 </ul>
-          
+                <!-- <div class="social-icons">
+                    <img src="path/to/facebook-icon.png" alt="Facebook" />
+                    <img src="path/to/tiktok-icon.png" alt="TikTok" />
+                    <img src="path/to/instagram-icon.png" alt="Instagram" />
+                </div>
+                <div class="payment-icons">
+                    <img src="path/to/mastercard-icon.png" alt="Mastercard" />
+                    <img src="path/to/visa-icon.png" alt="Visa" />
+                    <img src="path/to/atm-icon.png" alt="ATM" />
+                </div> -->
             </a-col>
             <a-col xs="24" sm="12" md="6">
                 <h3>CẬP NHẬT THÔNG TIN KHUYẾN MÃI</h3>
@@ -38,6 +47,7 @@
                     <button class="subscribe-btn">Đăng ký</button>
                 </div>
                 <div class="app-download">
+                    <!-- <img src="path/to/qrcode-icon.png" alt="QR Code" /> -->
                     <div class="app-links">
                         <p>App Store</p>
                         <p>Google Play</p>

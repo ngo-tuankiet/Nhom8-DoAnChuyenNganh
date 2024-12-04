@@ -1,18 +1,7 @@
 <template>
     <div>
-        <div class="slider">
-            <div v-for="(image, index) in images" :key="index" class="slide"
-                :class="{ active: index === currentIndex }">
-                <img :src="image" alt="slide image" />
-            </div>
-        </div>
-        <a-row type="flex" justify="center" align="middle" style="height: 100px;">
-            <a-col>
-                <h1 style="font-size: 50px;margin-bottom: 150px;">TOP SẢN PHẨM BÁN CHẠY</h1>
-            </a-col>
-        </a-row>
-
-        <a-row :gutter="24" style="margin-top: 100px; justify-content: center">
+        <h1 style="text-align: center; font-size: 50px;">DANH SÁCH SẢN PHẨM</h1>
+        <a-row :gutter="24">
             <a-col span="6" v-for="product in products" :key="product.id">
                 <a-card class="custom-card" hoverable :title="product.title" style="margin-top: 10px;">
                     <div class="imgProduct">
@@ -51,37 +40,10 @@
 <script>
 import { MinusOutlined, PlusOutlined, HeartFilled } from '@ant-design/icons-vue';
 import axios from 'axios';
+
 export default {
-    name: 'Index',
-    components: {
-        MinusOutlined,
-        HeartFilled,
-        PlusOutlined,
-    },
     data() {
         return {
-            images: [
-                'https://file.hstatic.net/1000391653/file/slider-ct-28---31__1__master.jpg',
-                'https://file.hstatic.net/1000391653/file/crazynight-new_1_master.jpg',
-                'https://file.hstatic.net/1000391653/file/dbt-new_1_master.jpg'
-            ],
-            currentIndex: 0,
-
-            favoriteProducts: [
-                {
-                    id: 1,
-                    title: "Bộ quà tặng 2 nến Mini Holiday 2022",
-                    coverImage: 'https://media.hcdn.vn/catalog/product/p/r/promotions-auto-sua-rua-mat-cerave-sach-sau-cho-da-thuong-den-da-dau-473ml_4tf8JrrMSme7E5d9_img_220x220_0dff4c_fit_center.png',
-                    price: "3.040.000₫",
-                },
-                {
-                    id: 2,
-                    title: "Bộ tinh dầu toả hương Gabriele 350ML",
-                    coverImage: 'https://media.hcdn.vn/catalog/product/f/a/facebook-dynamic-318900012-1696306376_img_220x220_0dff4c_fit_center.jpg',
-                    price: "5.760.000₫",
-                },
-                // Thêm các sản phẩm khác tại đây...
-            ],
             products: [],
             isModalVisible: false,
             selectedProduct: {},
@@ -92,23 +54,24 @@ export default {
             likedProducts: []
         };
     },
-    mounted() {
-        this.startSlideShow();
+    components: {
+        MinusOutlined,
+        HeartFilled,
+        PlusOutlined,
     },
     methods: {
-        startSlideShow() {
-            setInterval(() => {
-                this.currentIndex = (this.currentIndex + 1) % this.images.length;
-            }, 2000);
-        },
         async fetchProducts() {
+            const { idCategory } = this.$route.params;
             try {
-                const response = await axios.get(`http://localhost:5000/api/order/top-products`, {
+                const response = await axios.get(`http://localhost:5000/api/products/subcategory/${idCategory}`, {
+                    params: {
+                        page: this.page,
+                        limit: this.limit,
 
+                    }
                 });
-                console.log(response.data.data)
-                this.products = response.data.data;
-                // this.totalProducts = response.data.total;
+                this.products = response.data.products;
+                this.totalProducts = response.data.total;
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -236,49 +199,10 @@ export default {
     watch: {
         '$route.params': 'fetchProducts'
     }
-
 };
 </script>
 
 <style scoped>
-.slider {
-    position: relative;
-    width: 100%;
-    height: 500px;
-    overflow: hidden;
-}
-
-.slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.slide {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    transform: translateX(100%);
-}
-
-.slide.active {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.favorite-products {
-    margin-top: 20px;
-}
-
-.product {
-    display: inline-block;
-    width: 150px;
-    margin: 10px;
-    text-align: center;
-}
-
 .custom-card {
     display: flex;
     flex-direction: column;

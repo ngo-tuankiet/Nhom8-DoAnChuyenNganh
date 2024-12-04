@@ -42,7 +42,11 @@
                         <a-input v-model:value="formState.email" />
                     </a-form-item>
 
-                    
+                    <!-- <a-form-item label="Mật khẩu" name="password" :required="!currentId">
+                        <a-input-password v-model:value="formState.password" placeholder={currentId
+                            ? "Để trống nếu không thay đổi mật khẩu" : "" } />
+                    </a-form-item> -->
+
                     <a-form-item label="Họ và tên" name="fullname">
                         <a-input v-model:value="formState.fullname" />
                     </a-form-item>
@@ -139,7 +143,7 @@ const handleOk = () => {
 
         const url = currentId.value
             ? `http://localhost:5000/api/users/user/${currentId.value}`
-            : 'http://localhost:5000/api/register';
+            : 'http://localhost:5000/api/users/user'
         const method = currentId.value ? 'PUT' : 'POST'
 
         // Nếu đang edit và không nhập mật khẩu mới thì xóa trường password

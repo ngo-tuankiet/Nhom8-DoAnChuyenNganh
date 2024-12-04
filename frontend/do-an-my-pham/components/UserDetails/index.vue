@@ -7,7 +7,9 @@
             <a-form-item label="Email">
                 <a-input v-model:value="user.email" disabled />
             </a-form-item>
-            
+            <!-- <a-form-item label="Số điện thoại">
+                <a-input v-model:value="user.phone" />
+            </a-form-item> -->
             <a-button type="primary" @click="updateInfo">Cập nhật</a-button>
         </a-form>
     </div>

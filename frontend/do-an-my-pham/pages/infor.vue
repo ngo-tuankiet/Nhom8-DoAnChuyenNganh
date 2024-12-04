@@ -3,24 +3,24 @@
         <a-card style="width: 100%; height: 100%;">
             <a-tabs default-active-key="1" centered @change="handleTabChange">
                 <a-tab-pane key="1" tab="Thông tin chi tiết">
-                <UserDetails />
+                    <UserDetails />
                 </a-tab-pane>
-                <a-tab-pane key="2" tab="Yêu thich">
-                <FavouriteItems />
+                <a-tab-pane key="2" tab="Yêu thích">
+                    <FavoriteItems />
                 </a-tab-pane>
                 <a-tab-pane key="3" tab="Đơn hàng">
-                <OrdersItems />
+                    <OrdersItems />
                 </a-tab-pane>
                 <a-tab-pane key="4" tab="Cập nhật mật khẩu">
-                <ChangePassword />
+                    <ChangePassword />
                 </a-tab-pane>
                 <a-tab-pane key="5" tab="Đăng xuất">
-                <div class="logout-container">
-                    <p>Bạn có chắc muốn đăng xuất?</p>
-                     <a-button type="primary" danger @click="handleLogout">
-                        Đăng xuất
-                     </a-button>
-                </div>
+                    <div class="logout-container">
+                        <p>Bạn có chắc chắn muốn đăng xuất?</p>
+                        <a-button type="primary" danger @click="handleLogout">
+                            Đăng xuất
+                        </a-button>
+                    </div>
                 </a-tab-pane>
             </a-tabs>
         </a-card>
@@ -28,10 +28,12 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
-import { message } from 'ant-design-vue';
-import UserDetails from '../components/UserDetails/index.vue';
-import ChangePassword  from '../components/ChangePassword/index.vue';
+import { useRouter } from 'vue-router'
+import { message } from 'ant-design-vue'
+import UserDetails from '../components/UserDetails/index.vue'
+import FavoriteItems from '../components/Favourite/index.vue'
+import OrdersItems from '../components/Orders/index.vue'
+import ChangePassword from '../components/ChangePassword/index.vue'
 const router = useRouter()
 
 const handleLogout = () => {
@@ -40,14 +42,14 @@ const handleLogout = () => {
         message.success('Đăng xuất thành công!')
         router.push('/')
     } catch (error) {
-        console.error('Lỗi khi đăng xuất: ', error)
+        console.error('Lỗi khi đăng xuất:', error)
         message.error('Có lỗi xảy ra khi đăng xuất!')
     }
 }
 
-//tự động logout khi chọn tab đăng xuất
+// Optional: Tự động logout khi chọn tab đăng xuất
 const handleTabChange = (key) => {
-    if (key ==='5') {
+    if (key === '5') {
         handleLogout()
     }
 }
@@ -67,7 +69,7 @@ const handleTabChange = (key) => {
     padding: 20px;
 }
 
-.logout-container {
+.logout-container p {
     margin-bottom: 20px;
 }
 
