@@ -5,7 +5,7 @@ const db = require('../config/db');
 
 // Get all categories
 router.get('/categories', (req, res) => {
-    db.query('SELECT * FROM categories', (error, results) => {
+    db.query('SELECT * FROM categories ORDER BY id ASC', (error, results) => {
         if (error) {
             return res.status(500).json({ error: 'Error retrieving categories' });
         }

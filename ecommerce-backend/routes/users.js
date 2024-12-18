@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
-
+const bcrypt = require('bcrypt')
 // Đăng ký người dùng
 router.post('/register', (req, res) => {
     const { username, email, password, fullname } = req.body;
@@ -34,7 +34,7 @@ router.put('/update', (req, res) => {
 });
 // Get all users
 router.get('/users', (req, res) => {
-    db.query('SELECT id, username, email, role, fullname FROM users WHERE role = 1', (error, results) => {
+    db.query('SELECT id, username, email, role, fullname FROM users ', (error, results) => {
         if (error) {
             return res.status(500).json({ error: 'Error retrieving users' });
         }

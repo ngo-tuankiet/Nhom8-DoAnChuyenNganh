@@ -171,7 +171,9 @@ export default {
                         } else {
                             this.likedProducts.push(id);
                         }
-                        message.success(`Đã ${this.isLiked ? 'thêm' : 'xóa'} sản phẩm vào danh sách yêu thích`);
+                        // message.success(`Đã ${this.isLiked ? 'thêm' : 'xóa'} sản phẩm vào danh sách yêu thích`);
+                        message.success(`Đã ${isLiked ? 'xóa' : 'thêm'} sản phẩm vào danh sách yêu thích`);
+
                     } else {
                         message.error('Có lỗi khi cập nhật danh sách yêu thích');
                     }

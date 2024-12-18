@@ -621,7 +621,7 @@ const _TWlgUjDCGK = (function(nitro) {
 
 const rootDir = "E:/Nhom_8/Nhom8-DoAnChuyenNganh/frontend/do-an-my-pham";
 
-const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"}],"link":[],"style":[],"script":[],"noscript":[]};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"Mô tả chung của website"}],"link":[],"style":[],"script":[],"noscript":[],"title":"Cửa hàng mỹ phẩm"};
 
 const appRootTag = "div";
 

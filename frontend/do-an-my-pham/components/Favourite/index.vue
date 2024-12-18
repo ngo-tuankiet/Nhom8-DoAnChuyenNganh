@@ -48,14 +48,14 @@ export default {
             if (user) {
                 try {
                     const response = await fetch(`http://localhost:5000/api/products/favourites/${user.id}`);
+                    console.log(response);
                     if (response.ok) {
                         const data = await response.json(); // Chờ dữ liệu JSON được trả về
-                        console.log("Dữ liệu từ API:", data);
                         this.favouriteProducts = data.data; // Giả sử dữ liệu nằm trong `data.data`
                     } else {
                         message.error('Có lỗi khi tải danh sách sản phẩm yêu thích');
                     }
-                } catch (error) {
+                } catch (error) {   
                     console.error('Error fetching favourite products:', error);
                     message.error('Có lỗi khi tải danh sách sản phẩm yêu thích');
                 }

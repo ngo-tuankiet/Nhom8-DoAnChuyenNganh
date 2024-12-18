@@ -276,11 +276,11 @@ export default {
         getStatusColor(status) {
             switch (status) {
                 case 1:
-                    return "Chờ xác nhận";
+                    return "orange";
                 case 5:
-                    return "Đã hủy đơn";
+                    return "red";
                 default:
-                    return "Chờ xác nhận"
+                    return "blue"
             }
             // const statusColors = {
             //     'pending': 'orange',
@@ -305,12 +305,7 @@ export default {
                 default:
                     return "Chờ xác nhận"
             }
-            // const statusColors = {
-            //     'pending': 'orange',
-            //     'processing': 'blue',
-            //     'completed': 'green',
-            //     'cancelled': 'red'
-            // };
+         
         }
     }
 };

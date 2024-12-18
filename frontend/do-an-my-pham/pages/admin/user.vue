@@ -42,11 +42,7 @@
                         <a-input v-model:value="formState.email" />
                     </a-form-item>
 
-                    <!-- <a-form-item label="Mật khẩu" name="password" :required="!currentId">
-                        <a-input-password v-model:value="formState.password" placeholder={currentId
-                            ? "Để trống nếu không thay đổi mật khẩu" : "" } />
-                    </a-form-item> -->
-
+                    
                     <a-form-item label="Họ và tên" name="fullname">
                         <a-input v-model:value="formState.fullname" />
                     </a-form-item>
@@ -57,6 +53,12 @@
                             <a-select-option :value="2">Admin</a-select-option>
                         </a-select>
                     </a-form-item>
+                    <a-form-item label="Mật khẩu" name="password" :required="!currentId">
+            <a-input-password
+                v-model:value="formState.password"
+                :placeholder="currentId ? 'Để trống nếu không thay đổi mật khẩu' : 'Nhập mật khẩu mới'"
+            />
+        </a-form-item>
                 </a-form>
             </a-modal>
         </a-card>
@@ -64,26 +66,26 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, onBeforeUnmount } from 'vue'
-import { message } from 'ant-design-vue'
-import { useRouter } from 'vue-router'
+import { ref, reactive, onMounted, onBeforeUnmount } from 'vue';
+import { message } from 'ant-design-vue';
+import { useRouter } from 'vue-router';
 
-const router = useRouter()
+const router = useRouter();
 
 definePageMeta({
     layout: 'admin',
-    keepalive: false
-})
+    keepalive: false,
+});
 
 // State
-const visible = ref(false)
-const confirmLoading = ref(false)
-const users = ref([])
-const modalTitle = ref('Thêm tài khoản')
-const formRef = ref(null)
-const currentId = ref(null)
-const controller = new AbortController()
-const signal = controller.signal
+const visible = ref(false);
+const confirmLoading = ref(false);
+const users = ref([]);
+const modalTitle = ref('Thêm tài khoản');
+const formRef = ref(null);
+const currentId = ref(null);
+const controller = new AbortController();
+const signal = controller.signal;
 
 // Initial form state
 const initialFormState = {
@@ -91,11 +93,11 @@ const initialFormState = {
     email: '',
     password: '',
     fullname: '',
-    role: 1
-}
+    role: 1,
+};
 
 // Form state
-const formState = reactive({ ...initialFormState })
+const formState = reactive({ ...initialFormState });
 
 // Table columns
 const columns = [
@@ -104,132 +106,126 @@ const columns = [
     { title: 'Email', dataIndex: 'email', key: 'email' },
     { title: 'Họ và tên', dataIndex: 'fullname', key: 'fullname' },
     { title: 'Vai trò', dataIndex: 'role', key: 'role' },
-    { title: 'Thao tác', key: 'action' }
-]
+    { title: 'Thao tác', key: 'action' },
+];
 
 // Form rules
 const rules = {
     username: [
         { required: true, message: 'Vui lòng nhập tên đăng nhập' },
-        { min: 3, message: 'Tên đăng nhập phải có ít nhất 3 ký tự' }
+        { min: 3, message: 'Tên đăng nhập phải có ít nhất 3 ký tự' },
     ],
     email: [
         { required: true, message: 'Vui lòng nhập email' },
-        { type: 'email', message: 'Email không hợp lệ' }
+        { type: 'email', message: 'Email không hợp lệ' },
     ],
     password: [
         { required: (formRef) => !currentId.value, message: 'Vui lòng nhập mật khẩu' },
-        { min: 6, message: 'Mật khẩu phải có ít nhất 6 ký tự' }
+        { min: 6, message: 'Mật khẩu phải có ít nhất 6 ký tự' },
     ],
-    fullname: [
-        { required: true, message: 'Vui lòng nhập họ và tên' }
-    ],
-    role: [
-        { required: true, message: 'Vui lòng chọn vai trò' }
-    ]
-}
+    fullname: [{ required: true, message: 'Vui lòng nhập họ và tên' }],
+    role: [{ required: true, message: 'Vui lòng chọn vai trò' }],
+};
 
 // Methods
 const showModal = () => {
-    visible.value = true
-    modalTitle.value = 'Thêm tài khoản'
-    currentId.value = null
-    resetForm()
-}
+    visible.value = true;
+    modalTitle.value = 'Thêm tài khoản';
+    currentId.value = null;
+    resetForm();
+};
 
 const handleOk = () => {
     formRef.value?.validate().then(() => {
-        confirmLoading.value = true
+        confirmLoading.value = true;
 
         const url = currentId.value
-            ? `http://localhost:5000/api/users/user/${currentId.value}`
-            : 'http://localhost:5000/api/users/user'
-        const method = currentId.value ? 'PUT' : 'POST'
+            ? `http://localhost:5000/api/users/users/${currentId.value}`
+            : 'http://localhost:5000/api/users/register';
+        const method = currentId.value ? 'PUT' : 'POST';
 
-        // Nếu đang edit và không nhập mật khẩu mới thì xóa trường password
-        if (currentId.value && !formState.password) {
-            delete formState.password
+        // Loại bỏ mật khẩu nếu không thay đổi
+        const requestData = { ...formState };
+        if (currentId.value && !requestData.password) {
+            delete requestData.password;
         }
 
         fetch(url, {
             method,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formState),
-            signal
+            body: JSON.stringify(requestData),
+            signal,
         })
-            .then(response => response.json())
-            .then(() => {
-                message.success(`Tài khoản đã được ${currentId.value ? 'cập nhật' : 'thêm'} thành công`)
-                visible.value = false
-                confirmLoading.value = false
-                fetchUsers()
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`Lỗi ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
             })
-            .catch(error => {
-                if (error.name === 'AbortError') return
-                message.error('Có lỗi xảy ra')
-                confirmLoading.value = false
+            .then((data) => {
+                message.success(`Tài khoản đã được ${currentId.value ? 'cập nhật' : 'thêm'} thành công`);
+                visible.value = false;
+                confirmLoading.value = false;
+                fetchUsers(); // Tải lại danh sách người dùng
             })
-    })
-}
+            .catch((error) => {
+                message.error('Có lỗi xảy ra khi cập nhật tài khoản');
+                confirmLoading.value = false;
+            });
+    });
+};
 
 const handleCancel = () => {
-    visible.value = false
-    resetForm()
-}
+    visible.value = false;
+    resetForm();
+};
 
 const handleEdit = (record) => {
-    currentId.value = record.id
-    modalTitle.value = 'Sửa tài khoản'
-    Object.assign(formState, { ...record, password: '' }) // Không hiển thị mật khẩu cũ
-    visible.value = true
-}
+    currentId.value = record.id;
+    modalTitle.value = 'Sửa tài khoản';
+    Object.assign(formState, { ...record, password: '' }); // Không hiển thị mật khẩu cũ
+    visible.value = true;
+};
 
 const handleDelete = async (id) => {
     try {
-        await fetch(`http://localhost:5000/api/users/users/${id}`, {
+        const response = await fetch(`http://localhost:5000/api/users/users/${id}`, {
             method: 'DELETE',
-            signal
-        })
-        message.success('Xóa tài khoản thành công')
-        fetchUsers()
+            signal,
+        });
+        if (!response.ok) {
+            throw new Error('Lỗi khi xóa tài khoản');
+        }
+        message.success('Xóa tài khoản thành công');
+        fetchUsers();
     } catch (error) {
-        if (error.name === 'AbortError') return
-        message.error('Có lỗi xảy ra khi xóa tài khoản')
+        message.error('Có lỗi xảy ra khi xóa tài khoản');
     }
-}
+};
 
 const resetForm = () => {
-    Object.assign(formState, initialFormState)
-    formRef.value?.resetFields()
-}
+    Object.assign(formState, initialFormState);
+    formRef.value?.resetFields();
+};
 
 const fetchUsers = async () => {
     try {
-        const response = await fetch('http://localhost:5000/api/users/users', { signal })
-        users.value = await response.json()
+        const response = await fetch('http://localhost:5000/api/users/users', { signal });
+        users.value = await response.json();
     } catch (error) {
-        if (error.name === 'AbortError') return
-        message.error('Có lỗi xảy ra khi tải danh sách tài khoản')
+        message.error('Có lỗi xảy ra khi tải danh sách tài khoản');
     }
-}
+};
 
 // Lifecycle hooks
 onMounted(() => {
-    fetchUsers()
-})
+    fetchUsers();
+});
 
 onBeforeUnmount(() => {
-    visible.value = false
-    confirmLoading.value = false
-    controller.abort()
-    users.value = []
-})
-
-// Router guard
-router.beforeEach((to, from, next) => {
-    visible.value = false
-    next()
-})
+    controller.abort();
+    users.value = [];
+});
 </script>

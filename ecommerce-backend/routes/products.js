@@ -68,7 +68,7 @@ router.get('/', (req, res) => {
                 // Kiểm tra và xử lý danh sách ảnh
                 if (product.image_ids && product.image_urls) {
                     const ids = product.image_ids.split(',');
-                    const urls = product.image_urls.split(',');
+                    const urls = product.image_urls.split(',').map(image => `${BASE_URL}/${image}`);
 
                     for (let i = 0; i < ids.length; i++) {
                         images.push({
@@ -98,7 +98,6 @@ router.get('/', (req, res) => {
         });
     });
 });
-// Lấy chi tiết một sản phẩm
 
 // Lấy chi tiết một sản phẩm
 router.get('/category', (req, res) => {
@@ -181,6 +180,8 @@ router.get('/categories', (req, res) => {
         });
     });
 });
+      
+
 
 // Lấy danh sách sản phẩm theo subcategory ID
 router.get('/subcategory/:subcategoryId', (req, res) => {
@@ -234,7 +235,7 @@ router.get('/subcategory/:subcategoryId', (req, res) => {
                 // Kiểm tra và xử lý danh sách ảnh
                 if (product.image_ids && product.image_urls) {
                     const ids = product.image_ids.split(',');
-                    const urls = product.image_urls.split(',');
+                    const urls = product.image_urls.split(',').map(image => `${BASE_URL}/${image}`);
 
                     for (let i = 0; i < ids.length; i++) {
                         images.push({
@@ -314,7 +315,8 @@ router.get('/brand/:brandId', (req, res) => {
                 const images = [];
                 if (product.image_ids && product.image_urls) {
                     const ids = product.image_ids.split(',');
-                    const urls = product.image_urls.split(',');
+                   
+                    const urls = product.image_urls.split(',').map(image => `${BASE_URL}/${image}`);
                     for (let i = 0; i < ids.length; i++) {
                         images.push({ id: ids[i], url: urls[i] });
                     }
@@ -405,7 +407,7 @@ router.post('/create', upload.array('images', 10), async (req, res) => {
                     images: imageUrls
                 });
             }
-        );
+        ); 
     });
 });
 
@@ -631,7 +633,7 @@ router.delete('/favourites', (req, res) => {
 
         res.json({
             success: true,
-            message: 'Xóa sản phẩm khỏi danh sách yêu thích thành công'
+            message: 'thêm sản phẩm vào danh sách yêu thích thành công'
         });
     });
 });
@@ -661,7 +663,9 @@ router.get('/favourites/:userId', (req, res) => {
 
         const formattedResults = results.map(result => ({
             ...result,
-            images: result.images ? result.images.split(',') : []
+            images:  result.images
+            ? result.images.split(',').map(image => `${BASE_URL}/${image}`)
+            : []
         }));
 
         res.json({

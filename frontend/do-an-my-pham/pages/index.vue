@@ -80,7 +80,6 @@ export default {
                     coverImage: 'https://media.hcdn.vn/catalog/product/f/a/facebook-dynamic-318900012-1696306376_img_220x220_0dff4c_fit_center.jpg',
                     price: "5.760.000₫",
                 },
-                // Thêm các sản phẩm khác tại đây...
             ],
             products: [],
             isModalVisible: false,
@@ -208,7 +207,7 @@ export default {
                         } else {
                             this.likedProducts.push(id);
                         }
-                        message.success(`Đã ${this.isLiked ? 'thêm' : 'xóa'} sản phẩm vào danh sách yêu thích`);
+                        message.success(`Đã ${isLiked ? 'xóa' : 'thêm'} sản phẩm vào danh sách yêu thích`);
                     } else {
                         message.error('Có lỗi khi cập nhật danh sách yêu thích');
                     }

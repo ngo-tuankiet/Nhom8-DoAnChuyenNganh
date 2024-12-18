@@ -105,7 +105,8 @@ router.get('/list', (req, res) => {
         FROM orders o
         LEFT JOIN order_details od ON o.id = od.order_id
         GROUP BY o.id
-        ORDER BY o.created_at DESC
+        ORDER BY id ASC
+
     `;
 
     db.query(sql, (error, results) => {
@@ -131,7 +132,7 @@ router.get('/list/:status', (req, res) => {
         LEFT JOIN order_details od ON o.id = od.order_id
         WHERE o.status = ?
         GROUP BY o.id
-        ORDER BY o.created_at DESC
+         ORDER BY id ASC
     `;
 
     db.query(sql, [status], (error, results) => {
@@ -150,23 +151,24 @@ router.get('/list/:status', (req, res) => {
     });
 });
 router.get('/top-products', (req, res) => {
+    const base_url = 'http://localhost:5000/';
     const topProductsSql = `
-        SELECT p.id,
-               p.name,
-               p.description,
-               p.price,
-               p.stock,
-               p.brand_id,
-               p.subcategory_id,
-               b.brand_name as brand_name,
-               GROUP_CONCAT(JSON_OBJECT('id', pi.id, 'url', pi.url)) as product_images
-        FROM order_details od
-        JOIN products p ON od.product_id = p.id
-        LEFT JOIN brands b ON p.brand_id = b.id
-        LEFT JOIN productimage pi ON p.id = pi.product_id
-        GROUP BY p.id, p.name, p.description, p.price, p.stock, p.brand_id, p.subcategory_id, b.brand_name
-        ORDER BY SUM(od.quantity) DESC
-        LIMIT 5
+            SELECT p.id,
+                p.name,
+                p.description,
+                p.price,
+                p.stock,
+                p.brand_id,
+                p.subcategory_id,
+                b.brand_name as brand_name,
+                GROUP_CONCAT(JSON_OBJECT('id', pi.id, 'url', pi.url)) as product_images
+            FROM order_details od
+            JOIN products p ON od.product_id = p.id
+            LEFT JOIN brands b ON p.brand_id = b.id
+            LEFT JOIN productimage pi ON p.id = pi.product_id
+            GROUP BY p.id, p.name, p.description, p.price, p.stock, p.brand_id, p.subcategory_id, b.brand_name
+            ORDER BY SUM(od.quantity) DESC
+            LIMIT 5
     `;
 
     db.query(topProductsSql, (error, results) => {
@@ -187,7 +189,10 @@ router.get('/top-products', (req, res) => {
             brand_id: item.brand_id,
             subcategory_id: item.subcategory_id,
             brand_name: item.brand_name,
-            images: item.product_images ? JSON.parse(`[${item.product_images}]`) : []
+            images: item.product_images ? JSON.parse(`[${item.product_images}]`).map(image => ({
+                ...image,
+                url: `${base_url}${image.url}` // Thêm base_url vào trước URL của ảnh
+            })) : []
         }));
 
         res.json({

@@ -4,7 +4,7 @@ const router = express.Router();
 const db = require('../config/db');
 // Get all brands
 router.get('/list', (req, res) => {
-    db.query('SELECT * FROM brands', (error, results) => {
+    db.query('SELECT * FROM brands ORDER BY id ASC', (error, results) => {
         if (error) {
             return res.status(500).json({ error: 'Error retrieving brands' });
         }

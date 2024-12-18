@@ -56,13 +56,13 @@
                 </template>
             </a-dropdown>
             <ShoppingCartOutlined @click="handleToCart" style="font-size: 30px; color: #fff;margin-right: 10px;" />
-            <HeartOutlined style="font-size: 30px; color: #fff;" />
+            
         </div>
     </a-layout-header>
 </template>
 
 <script>
-import { SearchOutlined, UserOutlined, ShoppingCartOutlined, HeartOutlined } from '@ant-design/icons-vue';
+import { SearchOutlined, UserOutlined, ShoppingCartOutlined } from '@ant-design/icons-vue';
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 
@@ -72,7 +72,6 @@ export default {
         SearchOutlined,
         UserOutlined,
         ShoppingCartOutlined,
-        HeartOutlined,
     },
     setup() {
         const categories = ref([]);

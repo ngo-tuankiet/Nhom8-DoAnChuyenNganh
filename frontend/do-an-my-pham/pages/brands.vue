@@ -9,7 +9,7 @@
                     </template> -->
                     <a-card-meta :title="brand.brand_name">
                         <template #description>
-                            <p>{{ brand.description || 'No description available' }}</p>
+                            <p>{{ brand.description || 'Không có mô tả' }}</p>
                         </template>
                     </a-card-meta>
                 </a-card>

@@ -38,27 +38,7 @@ export default {
             message: ''
         }
     },
-    methods: {
-        async submitForm() {
-            try {
-                await axios.post('http://localhost:5000/api/contact/contact', {
-                    name: this.name,
-                    phone: this.phone,
-                    email: this.email,
-                    message: this.message
-                });
-                // Reset form fields
-                this.name = '';
-                this.phone = '';
-                this.email = '';
-                this.message = '';
-                alert('Message sent!');
-            } catch (error) {
-                console.error(error);
-                alert('Error sending message. Please try again later.');
-            }
-        }
-    }
+
 }
 </script>
 
